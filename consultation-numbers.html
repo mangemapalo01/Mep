@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Consultation Numbers - Axotol Black Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'DM Serif Display', serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .app-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .header-btn {
+            background: none;
+            border: none;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1rem;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(-3px);
+        }
+        
+        /* Main container */
+        .directory-container {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 80px;
+            padding-bottom: 40px;
+        }
+        
+        /* Title */
+        .directory-title {
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 10px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+        
+        .directory-subtitle {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 40px;
+            color: #aaa;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .category-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1rem;
+        }
+        
+        .category-tab.active {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: #fff;
+            border-color: #1a237e;
+        }
+        
+        .category-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Directory Sections */
+        .directory-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .directory-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #fff;
+            border-left: 4px solid #1a237e;
+            padding-left: 15px;
+        }
+        
+        /* Zone Categories */
+        .zone-category {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .zone-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4fc3f7;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .zone-title i {
+            color: #4fc3f7;
+        }
+        
+        /* Contact Cards */
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .contact-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .institution-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .institution-type {
+            display: inline-block;
+            background: rgba(139, 0, 0, 0.2);
+            color: #ff6b6b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .institution-type.secondary {
+            background: rgba(26, 35, 126, 0.2);
+            color: #8c9eff;
+        }
+        
+        .institution-type.university {
+            background: rgba(56, 142, 60, 0.2);
+            color: #69f0ae;
+        }
+        
+        .institution-type.govt {
+            background: rgba(245, 124, 0, 0.2);
+            color: #ffcc80;
+        }
+        
+        .contact-info {
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+        
+        .contact-item i {
+            color: #666;
+            margin-top: 3px;
+            min-width: 16px;
+        }
+        
+        .contact-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'DM Serif Display', serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .contact-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-action.call {
+            background: rgba(76, 175, 80, 0.2);
+            color: #69f0ae;
+        }
+        
+        .contact-action.call:hover {
+            background: rgba(76, 175, 80, 0.3);
+        }
+        
+        .contact-action.email {
+            background: rgba(33, 150, 243, 0.2);
+            color: #64b5f6;
+            margin-left: 10px;
+        }
+        
+        .contact-action.email:hover {
+            background: rgba(33, 150, 243, 0.3);
+        }
+        
+        /* Search and Filter */
+        .search-container {
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #1a237e;
+            box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 12px 15px;
+            }
+            
+            .header-btn {
+                padding: 8px 12px;
+                font-size: 0.95rem;
+            }
+            
+            .logo {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .directory-container {
+                margin-top: 70px;
+            }
+            
+            .contacts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .category-tab {
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+            
+            .app-header {
+                padding: 10px 12px;
+            }
+            
+            .header-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .directory-container {
+                margin-top: 65px;
+            }
+            
+            .zone-category {
+                padding: 15px;
+            }
+            
+            .contact-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="app-header">
+        <div class="logo-container">
+            <img src="image.png" alt="Axotol Logo" class="logo">
+        </div>
+        <button class="header-btn" onclick="window.location.href='axotol-admin-dashboard.html'">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+    </div>
+    
+    <!-- Main directory container -->
+    <div class="directory-container">
+        <!-- Title -->
+        <h1 class="directory-title">Consultation Directory</h1>
+        <p class="directory-subtitle">Phone numbers, emails, and contacts for educational institutions in Zambia</p>
+        
+        <!-- Search -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for school, university, or institution...">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="all">All Contacts</button>
+            <button class="category-tab" data-category="secondary">Secondary Schools</button>
+            <button class="category-tab" data-category="universities">Universities</button>
+            <button class="category-tab" data-category="institutions">Government Institutions</button>
+        </div>
+        
+        <!-- Directory Sections -->
+        <div class="directory-sections">
+            
+            <!-- Secondary Schools Section -->
+            <div class="directory-section active" id="secondary-section">
+                <h2 class="section-title">Secondary Schools by Zone</h2>
+                
+                <!-- Lusaka Zone -->
+                <div class="zone-category" data-zone="lusaka">
+                    <h3 class="zone-title"><i class="fas fa-map-marker-alt"></i> Lusaka Zone</h3>
+                    <div class="contacts-grid">
+                        <!-- David Kaunda Technical School -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">David Kaunda Technical School</h4>
+                            <span class="institution-type secondary">Technical Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+260 211 254170</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Lusaka, Zambia</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Government Co-educational Boarding School</span>
+                                </div>
+                            </div>
+                            <button class="contact-action call" onclick="callNumber('+260211254170')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                        </div>
+                        
+                        <!-- Arakan Boys Secondary School -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">Arakan Boys Secondary School</h4>
+                            <span class="institution-type secondary">Boys Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>P.O. Box 51134, Lusaka</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Phone number to be verified</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Arakan Boys Secondary School')">
+                                <i class="fas fa-edit"></i> Update Contact
+                            </button>
+                        </div>
+                        
+                        <!-- More schools can be added here -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">Munali Secondary School</h4>
+                            <span class="institution-type secondary">Government Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Contact details pending verification</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Munali Secondary School')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copperbelt Zone -->
+                <div class="zone-category" data-zone="copperbelt">
+                    <h3 class="zone-title"><i class="fas fa-map-marker-alt"></i> Copperbelt Zone</h3>
+                    <div class="contacts-grid">
+                        <div class="contact-card">
+                            <h4 class="institution-name">Kabwe Boys Secondary School</h4>
+                            <span class="institution-type secondary">Boys Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Contact details pending verification</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Kabwe Boys Secondary School')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h4 class="institution-name">Kitwe Boys Secondary School</h4>
+                            <span class="institution-type secondary">Boys Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Contact details pending verification</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Kitwe Boys Secondary School')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Southern Zone -->
+                <div class="zone-category" data-zone="southern">
+                    <h3 class="zone-title"><i class="fas fa-map-marker-alt"></i> Southern Zone</h3>
+                    <div class="contacts-grid">
+                        <div class="contact-card">
+                            <h4 class="institution-name">Hillcrest Technical School</h4>
+                            <span class="institution-type secondary">Technical Secondary</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Livingstone, Zambia</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Hillcrest Technical School')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Universities Section -->
+            <div class="directory-section" id="universities-section">
+                <h2 class="section-title">Universities by Location</h2>
+                
+                <!-- Lusaka Universities -->
+                <div class="zone-category" data-zone="lusaka">
+                    <h3 class="zone-title"><i class="fas fa-university"></i> Lusaka</h3>
+                    <div class="contacts-grid">
+                        <!-- University of Zambia -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">University of Zambia (UNZA)</h4>
+                            <span class="institution-type university">Public University</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+260 211 291 777/8</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>registrar@unza.zm</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>P.O. Box 32379, Lusaka</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Main campus with provincial centers</span>
+                                </div>
+                            </div>
+                            <button class="contact-action call" onclick="callNumber('+260211291777')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                            <button class="contact-action email" onclick="sendEmail('registrar@unza.zm')">
+                                <i class="fas fa-envelope"></i> Email
+                            </button>
+                        </div>
+                        
+                        <!-- University of Lusaka -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">University of Lusaka (UNILUS)</h4>
+                            <span class="institution-type university">Private University</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+260 211 269 942</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Campuses in Lusaka & Chongwe</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Email to be verified on official site</span>
+                                </div>
+                            </div>
+                            <button class="contact-action call" onclick="callNumber('+260211269942')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                            <button class="contact-action" onclick="showUpdateForm('University of Lusaka')">
+                                <i class="fas fa-edit"></i> Update Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copperbelt Universities -->
+                <div class="zone-category" data-zone="copperbelt">
+                    <h3 class="zone-title"><i class="fas fa-university"></i> Copperbelt</h3>
+                    <div class="contacts-grid">
+                        <!-- Copperbelt University -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">Copperbelt University (CBU)</h4>
+                            <span class="institution-type university">Public University</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Kitwe, Copperbelt Province</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Contact details to be verified on official website</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Copperbelt University')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other Universities -->
+                <div class="zone-category" data-zone="other">
+                    <h3 class="zone-title"><i class="fas fa-university"></i> Other Regions</h3>
+                    <div class="contacts-grid">
+                        <div class="contact-card">
+                            <h4 class="institution-name">Mulungushi University</h4>
+                            <span class="institution-type university">Public University</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Kabwe, Central Province</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Mulungushi University')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h4 class="institution-name">University of Livingstone</h4>
+                            <span class="institution-type university">Private University</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Livingstone, Southern Province</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('University of Livingstone')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Government Institutions Section -->
+            <div class="directory-section" id="institutions-section">
+                <h2 class="section-title">Government & Regulatory Institutions</h2>
+                
+                <!-- Ministry of Education -->
+                <div class="zone-category">
+                    <h3 class="zone-title"><i class="fas fa-landmark"></i> Ministry of Education</h3>
+                    <div class="contacts-grid">
+                        <div class="contact-card">
+                            <h4 class="institution-name">Ministry of Education HQ</h4>
+                            <span class="institution-type govt">Government Ministry</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+260 211 254340</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Edu.information@edu.gov.zm</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Haile Selassie Ave, Long Acres, Lusaka</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>P.O. Box 50619, Lusaka</span>
+                                </div>
+                            </div>
+                            <button class="contact-action call" onclick="callNumber('+260211254340')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                            <button class="contact-action email" onclick="sendEmail('Edu.information@edu.gov.zm')">
+                                <i class="fas fa-envelope"></i> Email
+                            </button>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <h4 class="institution-name">Directorate of University Education</h4>
+                            <span class="institution-type govt">Government Directorate</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>89 Corner of Chimanga & Mogadishu Roads</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>P.O. Box 50093, Lusaka</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Phone to be verified</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Directorate of University Education')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Regulatory Bodies -->
+                <div class="zone-category">
+                    <h3 class="zone-title"><i class="fas fa-balance-scale"></i> Regulatory Bodies</h3>
+                    <div class="contacts-grid">
+                        <!-- ZAQA -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">Zambia Qualifications Authority (ZAQA)</h4>
+                            <span class="institution-type govt">Regulatory Authority</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+260 211 843 050</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>P.O. Box 51103, Lusaka</span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Accredits tertiary institutions</span>
+                                </div>
+                            </div>
+                            <button class="contact-action call" onclick="callNumber('+260211843050')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                            <button class="contact-action" onclick="showUpdateForm('Zambia Qualifications Authority')">
+                                <i class="fas fa-edit"></i> Update Email
+                            </button>
+                        </div>
+                        
+                        <!-- Examinations Council -->
+                        <div class="contact-card">
+                            <h4 class="institution-name">Examinations Council of Zambia (ECZ)</h4>
+                            <span class="institution-type govt">Examinations Body</span>
+                            <div class="contact-info">
+                                <div class="contact-item">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Contact details to be verified on official website (ecz.gov.zm)</span>
+                                </div>
+                            </div>
+                            <button class="contact-action" onclick="showUpdateForm('Examinations Council of Zambia')">
+                                <i class="fas fa-edit"></i> Add Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 15px;"></i>
+            <h3>No contacts found</h3>
+            <p>Try searching with different keywords or check another category</p>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.category-tab');
+        const sections = document.querySelectorAll('.directory-section');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Get category from data attribute
+                const category = tab.getAttribute('data-category');
+                
+                // Hide all sections
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show appropriate section
+                if (category === 'all') {
+                    document.getElementById('secondary-section').classList.add('active');
+                    filterContacts(''); // Show all contacts
+                } else if (category === 'secondary') {
+                    document.getElementById('secondary-section').classList.add('active');
+                    filterContacts('secondary');
+                } else if (category === 'universities') {
+                    document.getElementById('universities-section').classList.add('active');
+                    filterContacts('university');
+                } else if (category === 'institutions') {
+                    document.getElementById('institutions-section').classList.add('active');
+                    filterContacts('govt');
+                }
+                
+                // Clear search input
+                document.getElementById('searchInput').value = '';
+            });
+        });
+        
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            filterContacts('', searchTerm);
+        });
+        
+        // Filter contacts based on type and search term
+        function filterContacts(type = '', searchTerm = '') {
+            let hasResults = false;
+            const contactCards = document.querySelectorAll('.contact-card');
+            const zones = document.querySelectorAll('.zone-category');
+            
+            contactCards.forEach(card => {
+                const institutionName = card.querySelector('.institution-name').textContent.toLowerCase();
+                const institutionType = card.querySelector('.institution-type').classList[1]; // Get type class
+                const cardText = card.textContent.toLowerCase();
+                
+                // Check if card matches search term
+                const matchesSearch = searchTerm === '' || cardText.includes(searchTerm);
+                
+                // Check if card matches type filter
+                const matchesType = type === '' || 
+                    (type === 'secondary' && institutionType === 'secondary') ||
+                    (type === 'university' && institutionType === 'university') ||
+                    (type === 'govt' && institutionType === 'govt');
+                
+                if (matchesSearch && matchesType) {
+                    card.style.display = 'block';
+                    hasResults = true;
+                    
+                    // Show parent zone if visible
+                    let zone = card.closest('.zone-category');
+                    if (zone) {
+                        zone.style.display = 'block';
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Hide empty zones
+            zones.forEach(zone => {
+                const visibleCards = zone.querySelectorAll('.contact-card[style="display: block"]');
+                if (visibleCards.length === 0) {
+                    zone.style.display = 'none';
+                } else {
+                    zone.style.display = 'block';
+                }
+            });
+            
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            if (hasResults) {
+                noResults.style.display = 'none';
+            } else {
+                noResults.style.display = 'block';
+            }
+        }
+        
+        // Call number function
+        function callNumber(number) {
+            if (confirm(`Call ${number}?`)) {
+                window.location.href = `tel:${number}`;
+            }
+        }
+        
+        // Send email function
+        function sendEmail(email) {
+            window.location.href = `mailto:${email}`;
+        }
+        
+        // Show update form (placeholder for admin functionality)
+        function showUpdateForm(institutionName) {
+            alert(`Update contact form for: ${institutionName}\n\nThis would open an admin form to add/update contact details.`);
+            // In a real implementation, this would open a modal with a form
+        }
+        
+        // Initialize by showing all contacts
+        filterContacts('');
+    </script>
+</body>
+</html>
+                
